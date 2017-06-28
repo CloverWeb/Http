@@ -15,7 +15,6 @@ use Joking\Http\Middleware\SessionMiddlewareInterfaces;
 /**
  * Class HttpSession
  * @package OBlood\Component\Http
- *
  */
 class HttpSession {
 
@@ -64,7 +63,7 @@ class HttpSession {
      * 添加session
      * @param $name
      * @param $value
-     * @param null $time 过期时间
+     * @param null|int $time 过期时间
      */
     public function add($name, $value, $time = null) {
         $this->open();
@@ -146,7 +145,12 @@ class HttpSession {
         session_destroy();
     }
 
-    //判断是否过期
+    /**
+     * 判断 session 是否依然坚挺
+     * 当时间 $entity->time 为 0 时那么该session值坚挺到海枯石烂
+     * @param SessionEntity $entity
+     * @return bool
+     */
     public function checkTimeout(SessionEntity $entity) {
         if ($entity->time > 0) {
             return $entity ? $entity->time > time() ? false : true : true;

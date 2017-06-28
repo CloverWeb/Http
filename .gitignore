@@ -1,0 +1,6 @@
+.idea/
+index.php
+.htaccess
+composer.lock
+composer.phar
+vendor/

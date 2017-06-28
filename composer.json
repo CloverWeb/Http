@@ -1,0 +1,22 @@
+{
+  "name": "joking/http",
+  "description": "简单的容器",
+  "minimum-stability": "dev",
+  "license": "joking",
+  "authors": [
+    {
+      "name": "joking",
+      "email": "370546391@qq.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Joking\\Http\\Functions\\": "src/Functions/",
+      "Joking\\Http\\Middleware\\": "src/Functions/",
+      "Joking\\Http\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.1.6"
+  }
+}

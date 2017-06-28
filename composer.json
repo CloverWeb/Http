@@ -2,7 +2,7 @@
   "name": "joking/http",
   "description": "封装http",
   "minimum-stability": "dev",
-  "version" : "0.2",
+  "version" : "dev-master",
   "license": "joking",
   "authors": [
     {

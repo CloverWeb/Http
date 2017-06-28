@@ -1,6 +1,6 @@
 {
   "name": "joking/http",
-  "description": "简单的容器",
+  "description": "封装http",
   "minimum-stability": "dev",
   "license": "joking",
   "authors": [
@@ -12,7 +12,7 @@
   "autoload": {
     "psr-4": {
       "Joking\\Http\\Functions\\": "src/Functions/",
-      "Joking\\Http\\Middleware\\": "src/Functions/",
+      "Joking\\Http\\Middleware\\": "src/Middleware/",
       "Joking\\Http\\": "src/"
     }
   },

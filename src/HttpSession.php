@@ -23,20 +23,7 @@ class HttpSession {
 
     public function open() {
         if (!$this->isOpen) {
-
-            //执行session开启之前的中间件
-            foreach (HttpMiddleware::$sessionStartBefore as $sessionMiddleware) {
-                if (!$sessionMiddleware instanceof SessionMiddlewareInterfaces) {
-                    throw new \Exception('设置对象错误！！！！');
-                }
-
-                if (is_object($sessionMiddleware)) {
-                    $sessionMiddleware->execute();
-                } elseif (class_exists($sessionMiddleware)) {
-                    $reflectionClass = new \ReflectionClass($sessionMiddleware);
-                    $reflectionClass->newInstance()->execute();
-                }
-            }
+            $this->middleware();
 
             session_start();
             $this->isOpen = true;
@@ -45,6 +32,32 @@ class HttpSession {
 
     public function isOpen() {
         return $this->isOpen;
+    }
+
+    /**
+     * 执行已经绑定的middleware
+     * @throws \Exception
+     */
+    private function middleware() {
+
+        //执行session开启之前的中间件
+        foreach (HttpMiddleware::$sessionStartBefore as $sessionMiddleware) {
+            if (is_object($sessionMiddleware)) {
+                if ($sessionMiddleware instanceof SessionMiddlewareInterfaces) {
+                    $sessionMiddleware->execute();
+                } else {
+                    throw new \Exception('找不到对象！！！！');
+                }
+            } elseif (is_string($sessionMiddleware) && class_exists($sessionMiddleware)) {
+                $reflectionClass = new \ReflectionClass($sessionMiddleware);
+                $class = $reflectionClass->newInstance();
+                if ($class instanceof SessionMiddlewareInterfaces) {
+                    $class->execute();
+                } else {
+                    throw new \Exception('找不到对象！！！！');
+                }
+            }
+        }
     }
 
     /**
@@ -90,8 +103,8 @@ class HttpSession {
                 $this->checkTimeout($_SESSION[$name]) && $this->remove($name);
                 return isset($_SESSION[$name]) ? true : false;
             }
+            return true;
         }
-
         return false;
     }
 
@@ -135,6 +148,10 @@ class HttpSession {
 
     //判断是否过期
     public function checkTimeout(SessionEntity $entity) {
-        return $entity ? $entity->time > time() ? false : true : true;
+        if ($entity->time > 0) {
+            return $entity ? $entity->time > time() ? false : true : true;
+        } else {
+            return false;
+        }
     }
 }

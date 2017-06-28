@@ -30,11 +30,11 @@ class HttpRequest {
     }
 
     public function get($name, $default = null) {
-        return $_GET[$name] ? $_GET[$name] : $default;
+        return isset($_GET[$name]) ? $_GET[$name] : $default;
     }
 
     public function post($name, $default = null) {
-        return $_POST[$name] ? $_POST[$name] : $default;
+        return isset($_POST[$name]) ? $_POST[$name] : $default;
     }
 
     public function isGet() {
